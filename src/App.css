@@ -1,38 +1,50 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+:root {
+  --dark: #17223b;
+  --semiDark: #263859;
+  --light: #6b778d;
+  --detail: #ff6768;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#userInput {
+  height: 0;
+  display: block;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  font-family: 'PT Mono', monospace;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.main-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--dark);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.text-container {
+  max-width: 600px;
+  color: var(--light);
+  background-color: var(--semiDark);
+  padding: 20px;
+  border-radius: 2px;
+  box-shadow: 0 0 3px #00000040;
+}
+.text-container span {
+  animation: border 2s ease-in-out infinite;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes border {
+  0% {
+    border-color: transparent;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    border-color: #f87e7e;
+  }
+  100% {
+    border-color: transparent;
   }
 }
