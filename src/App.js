@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
-let text = `fly home where entire tonight want heavy cannot read property style of undefined class program console game let you about tonight random color background border display integer code because function object keyboard `;
+let text = `fly home where entire tonight want heavy cannot read property style of undefined class program console game let you about random color background border display integer code because function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
 
 function App() {
   const letterRef = useRef({});
   const inputRef = useRef();
   const [testText, setTestText] = useState([]);
   const [time, setTime] = useState(60);
-  const interval = useRef(null);
   const [isTimerOn, setIsTimerOn] = useState(false);
+  const [result, setResult] = useState(null);
 
   let userLetters = [],
     index = 0,
@@ -18,6 +18,7 @@ function App() {
   useEffect(() => {
     if (time < 1) {
       setIsTimerOn(false);
+      calculateResult();
       return;
     }
     let id = null;
@@ -28,18 +29,6 @@ function App() {
     }
     return () => clearInterval(id);
   }, [time, isTimerOn]);
-  const countDown = () => {
-    if (time > 0) {
-      console.log(time);
-      setTime((c) => c - 1);
-    } else {
-      inputRef.current.disabled = true;
-      clearInterval(interval.current);
-    }
-  };
-  const startTimer = () => {
-    interval.current = setInterval(countDown, 1000);
-  };
 
   const generateText = () => {
     let randomText = text.split(' ').sort(() => Math.random() - 0.5);
@@ -48,8 +37,18 @@ function App() {
 
   useEffect(() => {
     generateText();
-    console.log(letters);
   }, []);
+
+  const calculateResult = () => {
+    const userWords = inputRef.current.value.split(' ');
+    var matchWords = 0;
+    userWords.forEach((word, i) => {
+      if (word === testText[i]) {
+        matchWords++;
+      }
+    });
+    setResult(matchWords);
+  };
 
   const restartTest = () => {
     generateText();
@@ -67,8 +66,8 @@ function App() {
     }
     userLetters = e.target.value.split('');
     // end of words
-    console.log(letters);
     if (userLetters.length === letters.length) {
+      calculateResult();
       console.log('restart');
       return restartTest();
     }
@@ -83,7 +82,6 @@ function App() {
       letterRef.current[index].style.borderLeft = '1px solid #896821';
       letterRef.current[index].style.color = '#6b778d';
     } else {
-      console.log(index);
       letterRef.current[index].style.borderLeft = '1px solid #896821';
       letterRef.current[index - 1].style.borderLeft = 'none';
       isCorrect = letters[index - 1] === userLetters[index - 1];
@@ -94,27 +92,39 @@ function App() {
 
   return (
     <div className='main-container'>
-      <div className='timer-container'>
-        <p>{time}</p>
-      </div>
-      <div className='text-container'>
-        <input
-          id='userInput'
-          ref={inputRef}
-          onChange={(e) => handleTextChange(e)}
-          autoFocus
-        />
-        <div className='text-field' onClick={() => inputRef.current.focus()}>
-          {testText
-            .join(' ')
-            .split('')
-            .map((char, index) => {
-              return (
-                <span key={index} ref={(el) => (letterRef.current[index] = el)}>
-                  {char}
-                </span>
-              );
-            })}
+      <div className='app-card'>
+        <div className='metrics-container'>
+          <div className='timer-container'>
+            <p id='timer-count'>{time}s</p>
+          </div>
+
+          <div className='result-container'>
+            {result && <p>score: {result}WPM</p>}
+          </div>
+          <button onClick={restartTest}>restart</button>
+        </div>
+        <div className='text-container'>
+          <input
+            id='userInput'
+            ref={inputRef}
+            onChange={(e) => handleTextChange(e)}
+            autoFocus
+          />
+          <div className='text-field' onClick={() => inputRef.current.focus()}>
+            {testText
+              .join(' ')
+              .split('')
+              .map((char, index) => {
+                return (
+                  <span
+                    key={index}
+                    ref={(el) => (letterRef.current[index] = el)}
+                  >
+                    {char}
+                  </span>
+                );
+              })}
+          </div>
         </div>
       </div>
     </div>
