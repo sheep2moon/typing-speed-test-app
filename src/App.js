@@ -9,11 +9,25 @@ function App() {
   const [testText, setTestText] = useState([]);
   const [time, setTime] = useState(60);
   const interval = useRef(null);
+  const [isTimerOn, setIsTimerOn] = useState(false);
 
   let userLetters = [],
     index = 0,
     isCorrect = false;
 
+  useEffect(() => {
+    if (time < 1) {
+      setIsTimerOn(false);
+      return;
+    }
+    let id = null;
+    if (isTimerOn) {
+      id = setInterval(() => {
+        setTime(time - 1);
+      }, 1000);
+    }
+    return () => clearInterval(id);
+  }, [time, isTimerOn]);
   const countDown = () => {
     if (time > 0) {
       console.log(time);
@@ -49,7 +63,7 @@ function App() {
   let letters = testText.join(' ').split('');
   const handleTextChange = (e) => {
     if (time === 60) {
-      startTimer();
+      setIsTimerOn(true);
     }
     userLetters = e.target.value.split('');
     // end of words
