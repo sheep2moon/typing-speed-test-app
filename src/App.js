@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
-let text = `fly home where entire tonight want heavy cannot read property style of undefined class program console game let you about random color background border display integer code because function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
+let text = `fly home where entire tonight want clean cannot read property style of undefined class program console game let you about random color background border display integer code type function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
 
 let timerValue = 30;
-let correctColor = '#129920';
-let incorrectColor = '#992012';
+let correctColor = '#ffbd69';
+let incorrectColor = '#ff6363';
 let isLastCorrect = false;
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [result, setResult] = useState(null);
   const [correctChar, setCorrectChar] = useState(0);
+  const [isTextBlur, setIsTextBlur] = useState(false);
 
   let userLetters = [],
     index = 0,
@@ -53,6 +54,7 @@ function App() {
       letterRef.current[index].style.borderLeft = 'none';
       letterRef.current[index].style.color = '#6b778d';
     }
+    letterRef.current[0].style.borderLeft = '2px solid #896821';
     setIsTimerOn(false);
     setTime(timerValue);
     setResult(null);
@@ -81,13 +83,13 @@ function App() {
     }
     if (e.nativeEvent.inputType === 'deleteContentBackward') {
       letterRef.current[index + 1].style.borderLeft = 'none';
-      letterRef.current[index].style.borderLeft = '1px solid #896821';
+      letterRef.current[index].style.borderLeft = '2px solid #896821';
       letterRef.current[index].style.color = '#6b778d';
       if (isLastCorrect) {
         setCorrectChar(correctChar - 1);
       }
     } else {
-      letterRef.current[index].style.borderLeft = '1px solid #896821';
+      letterRef.current[index].style.borderLeft = '2px solid #896821';
       letterRef.current[index - 1].style.borderLeft = 'none';
       isCorrect = letters[index - 1] === userLetters[index - 1];
 
@@ -101,18 +103,19 @@ function App() {
       }
     }
   };
-
+  console.log(isTextBlur);
   return (
     <div className='main-container'>
       <div className='app-card'>
+        <h1>Meshnotype.</h1>
         <div className='metrics-container'>
           <div className='timer-container'>
             <p id='timer-count'>{time}s</p>
           </div>
 
-          <div className='result-container'>{result && <p>{result}wpm</p>}</div>
           <button onClick={restartTest}>restart</button>
         </div>
+
         <div className='text-container'>
           <input
             id='userInput'
@@ -120,8 +123,28 @@ function App() {
             onChange={(e) => handleTextChange(e)}
             autoFocus
             autoComplete='off'
+            onBlur={() => setIsTextBlur(true)}
+            onFocus={() => {
+              setIsTextBlur(false);
+            }}
           />
-          <div className='text-field' onClick={() => inputRef.current.focus()}>
+          {isTextBlur && (
+            <p className='text-field-focus-hint'>
+              {!result
+                ? 'click here to start typing.'
+                : `${parseInt(result)} wpm`}
+            </p>
+          )}
+          <div
+            className={isTextBlur ? 'text-field text-field-blur' : 'text-field'}
+            onClick={() => {
+              if (result) {
+                restartTest();
+              } else {
+                inputRef.current.focus();
+              }
+            }}
+          >
             {testText
               .join(' ')
               .split('')
@@ -130,6 +153,9 @@ function App() {
                   <span
                     key={index}
                     ref={(el) => (letterRef.current[index] = el)}
+                    style={
+                      index === 0 ? { borderLeft: '2px solid #896821' } : {}
+                    }
                   >
                     {char}
                   </span>
@@ -137,6 +163,9 @@ function App() {
               })}
           </div>
         </div>
+        <p className='correct-chars-info'>
+          correct typed characters: {correctChar}
+        </p>
       </div>
     </div>
   );
