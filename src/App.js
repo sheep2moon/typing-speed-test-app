@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import githubIcon from './img/github-icon.png';
 
 let text = `fly home where entire tonight want clean cannot read property style of undefined class program console game let you about random color background border display integer code type function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
 
@@ -45,6 +46,15 @@ function App() {
 
   useEffect(() => {
     generateText();
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        restartTest();
+      }
+      if (e.key === 'Enter') {
+        inputRef.current.focus();
+      }
+    });
   }, []);
 
   const restartTest = () => {
@@ -93,7 +103,7 @@ function App() {
       letterRef.current[index - 1].style.borderLeft = 'none';
       isCorrect = letters[index - 1] === userLetters[index - 1];
 
-      if (isCorrect && !(userLetters[index - 1] === ' ')) {
+      if (isCorrect) {
         setCorrectChar(correctChar + 1);
         isLastCorrect = true;
         letterRef.current[index - 1].style.color = correctColor;
@@ -112,8 +122,7 @@ function App() {
           <div className='timer-container'>
             <p id='timer-count'>{time}s</p>
           </div>
-
-          <button onClick={restartTest}>restart</button>
+          <p id='correct-chars-info'>correct typed characters: {correctChar}</p>
         </div>
 
         <div className='text-container'>
@@ -163,10 +172,22 @@ function App() {
               })}
           </div>
         </div>
-        <p className='correct-chars-info'>
-          correct typed characters: {correctChar}
-        </p>
+        <div className='bottom-info'>
+          <p>
+            press <span>Tab</span> for restart
+          </p>
+          <button id='restart-button' onClick={restartTest}>
+            restart
+          </button>
+        </div>
       </div>
+
+      <footer>
+        <p>created by konrad iwan</p>
+        <a href='https://github.com/sheep2moon'>
+          <img src={githubIcon} alt='' />
+        </a>
+      </footer>
     </div>
   );
 }
