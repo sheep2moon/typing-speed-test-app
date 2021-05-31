@@ -117,7 +117,7 @@ function App() {
   return (
     <div className='main-container'>
       <div className='app-card'>
-        <h1>Meshnotype.</h1>
+        <h1 id='title'>Meshnotype</h1>
         <div className='metrics-container'>
           <div className='timer-container'>
             <p id='timer-count'>{time}s</p>
@@ -174,7 +174,7 @@ function App() {
         </div>
         <div className='bottom-info'>
           <p>
-            press <span>Tab</span> for restart
+            press <span>Tab</span> to restart
           </p>
           <button id='restart-button' onClick={restartTest}>
             restart
