@@ -39,7 +39,8 @@ body {
 }
 .metrics-container {
   width: 100%;
-  margin: 10px 5px;
+  margin: 10px 0;
+  padding: 0 5px;
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -47,22 +48,24 @@ body {
 .metrics-container button {
   background-color: var(--semiDark);
   border: none;
-  color: var(--dark);
+  color: var(--light);
+  box-shadow: 0 1px 2px var(--light);
   padding: 2px 5px;
   position: absolute;
   cursor: pointer;
   left: 50%;
   transform: translateX(-50%);
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 .metrics-container button:hover {
-  color: #ffffff50;
   box-shadow: 0 1px 2px #fff;
 }
 #timer-count {
   color: var(--detail);
 }
-
+.result-container p {
+  color: var(--detail);
+}
 @keyframes border {
   0% {
     border-color: #f87e7e40;
