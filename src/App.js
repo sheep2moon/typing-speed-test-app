@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import githubIcon from './img/github-icon.png';
 
-let text = `fly home where entire tonight want clean cannot read property style of undefined class program console game let you about random color background border display integer code type function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
+let english = `fly home where entire tonight want clean cannot read property style of undefined class program console game let you about random color background border display integer code type function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
+
+let polish =
+  'nie mnie ciebie kot jest oko spodnie ognisko telewizor dziecko świeca samochód prawo muzyka słowo czas strach dalej kwiat państwo unik portfel powoli szybko kilogram litr sikor mapa znak dłonie ucieka zegar lekarz moneta krem woda marzenie owca czegoś kupisz głowa książka cisza hałas bateria stary noc brat tak co robisz sztuka on dziś wiem to albo czemu ';
 
 let timerValue = 30;
 let correctColor = '#ffbd69';
@@ -18,6 +21,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [correctChar, setCorrectChar] = useState(0);
   const [isTextBlur, setIsTextBlur] = useState(false);
+  const [text, setText] = useState(english);
 
   let userLetters = [],
     index = 0,
@@ -55,15 +59,19 @@ function App() {
         inputRef.current.focus();
       }
     });
-  }, []);
+    restartTest();
+  }, [text]);
 
   const restartTest = () => {
     generateText();
-    inputRef.current.value = '';
-    for (let index = 0; index < letters.length; index++) {
-      letterRef.current[index].style.borderLeft = 'none';
+    userLetters = inputRef.current.value.split('');
+    userLetters.forEach((char, index) => {
+      letterRef.current[index + 1].style.borderLeft = 'none';
       letterRef.current[index].style.color = '#6b778d';
-    }
+    });
+
+    inputRef.current.value = '';
+
     letterRef.current[0].style.borderLeft = '2px solid #896821';
     setIsTimerOn(false);
     setTime(timerValue);
@@ -122,10 +130,14 @@ function App() {
           <div className='timer-container'>
             <p id='timer-count'>{time}s</p>
           </div>
-          <p id='correct-chars-info'>correct typed characters: {correctChar}</p>
+          <div className='language-container'>
+            <button onClick={() => setText(english)}>ENG</button>
+            <button onClick={() => setText(polish)}>PL</button>
+          </div>
         </div>
 
         <div className='text-container'>
+          <p id='correct-chars-info'>correct typed characters: {correctChar}</p>
           <input
             id='userInput'
             ref={inputRef}
@@ -140,7 +152,7 @@ function App() {
           {isTextBlur && (
             <p className='text-field-focus-hint'>
               {!result
-                ? 'click here to start typing.'
+                ? 'click here or press enter to start typing.'
                 : `${parseInt(result)} wpm`}
             </p>
           )}
@@ -172,6 +184,7 @@ function App() {
               })}
           </div>
         </div>
+
         <div className='bottom-info'>
           <p>
             press <span>Tab</span> to restart
