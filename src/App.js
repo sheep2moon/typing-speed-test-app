@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import githubIcon from './img/github-icon.png';
 
-let english = `fly home where entire tonight want clean cannot read property style of undefined class program console game let you about random color background border display integer code type function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
+const english = `fly home where entire tonight want clean cannot read property style of undefined class program console game let you about random color background border display integer code type function object keyboard more count cursor container react effect variable cycle method inside pass parameter runs timeout state update inside used then left empty need check know return else user hard light tutorial manage follow learn author editor scroll`;
 
-let polish =
+const polish =
   'nie mnie ciebie kot jest oko spodnie ognisko telewizor dziecko świeca samochód prawo muzyka słowo czas strach dalej kwiat państwo unik portfel powoli szybko kilogram litr sikor mapa znak dłonie ucieka zegar lekarz moneta krem woda marzenie owca czegoś kupisz głowa książka cisza hałas bateria stary noc brat tak co robisz sztuka on dziś wiem to albo czemu ';
 
 let timerValue = 30;
@@ -59,7 +59,6 @@ function App() {
         inputRef.current.focus();
       }
     });
-    restartTest();
   }, [text]);
 
   const restartTest = () => {
@@ -93,12 +92,10 @@ function App() {
     if (userLetters.length === letters.length) {
       return restartTest();
     }
+
+    index = userLetters.length;
+
     //backspace pressed
-    if (userLetters.length === 0) {
-      index = 0;
-    } else {
-      index = userLetters.length;
-    }
     if (e.nativeEvent.inputType === 'deleteContentBackward') {
       letterRef.current[index + 1].style.borderLeft = 'none';
       letterRef.current[index].style.borderLeft = '2px solid #896821';
@@ -131,8 +128,22 @@ function App() {
             <p id='timer-count'>{time}s</p>
           </div>
           <div className='language-container'>
-            <button onClick={() => setText(english)}>ENG</button>
-            <button onClick={() => setText(polish)}>PL</button>
+            <button
+              onClick={() => {
+                setText(english);
+                restartTest();
+              }}
+            >
+              ENG
+            </button>
+            <button
+              onClick={() => {
+                setText(polish);
+                restartTest();
+              }}
+            >
+              PL
+            </button>
           </div>
         </div>
 
